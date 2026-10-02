@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Luvv's — Menu Restoran</title>
+  <meta name="description" content="Menu hangat dan istimewa dari Luvv's, dibuat dengan cinta.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,700;9..144,800&family=Nunito:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <div class="ambient ambient-one"></div>
+  <div class="ambient ambient-two"></div>
+
+  <header class="navbar">
+    <div class="container nav-inner">
+      <a class="brand" href="#">
+        <span class="brand-mark" aria-hidden="true">🐰</span>
+        <span>
+          <strong>Luvv's</strong>
+          <small>made with love</small>
+        </span>
+      </a>
+
+      <nav class="nav-links">
+        <a href="#menu">Menu</a>
+        <a href="#about">Tentang</a>
+        <a href="#stats">Info</a>
+      </nav>
+
+      <div class="nav-right">
+        <button id="btnOpenCart" class="btn cart-trigger" type="button" aria-label="Buka keranjang">
+          <span aria-hidden="true">🛍</span><span class="cart-label">Keranjang</span><b id="cartCount">0</b>
+        </button>
+        <button id="btnDesktopMode" class="btn btn-mode" type="button" aria-pressed="false" title="Aktifkan tampilan desktop">
+          <span aria-hidden="true">▣</span><span id="desktopModeLabel">Desktop</span>
+        </button>
+        <span id="serverStatus" class="server-status offline">
+          <i></i> Menghubungkan...
+        </span>
+        <button id="btnOpenAddModal" class="btn btn-primary">+ Tambah Menu</button>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <section class="hero">
+      <div class="container hero-grid">
+        <div class="hero-copy">
+          <span class="eyebrow">♡ DIBUAT DENGAN CINTA, DISAJIKAN HANGAT</span>
+          <h1>Sepiring hangat,<br><em>semanis pelukan.</em></h1>
+          <p>Menu rumahan favorit dengan rasa yang bikin nyaman. Pilih yang kamu suka, kami siapkan dengan sepenuh hati.</p>
+          <a href="#menu" class="btn btn-primary hero-btn">Lihat menu <span>↓</span></a>
+        </div>
+
+        <div class="hero-card">
+          <div class="hero-food">
+            <img src="https://images.unsplash.com/photo-1603133872878-684f208fb84b?auto=format&fit=crop&w=900&q=85" alt="Nasi goreng spesial">
+          </div>
+          <div class="hero-card-content">
+            <div>
+              <span class="mini-label">♡ FAVORIT MINGGU INI</span>
+              <h3>Nasi Goreng Spesial Royal</h3>
+              <p>Favorit pelanggan</p>
+            </div>
+            <strong>Rp38.000</strong>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="stats" class="stats-section">
+      <div class="container stats-grid">
+        <div class="stat-card">
+          <span class="stat-icon">🍽️</span>
+          <div><strong id="statTotal">—</strong><span>Total Menu</span></div>
+        </div>
+        <div class="stat-card">
+          <span class="stat-icon">✓</span>
+          <div><strong id="statAvailable">—</strong><span>Menu Tersedia</span></div>
+        </div>
+        <div class="stat-card">
+          <span class="stat-icon">◉</span>
+          <div><strong id="statCategories">—</strong><span>Kategori</span></div>
+        </div>
+        <div class="stat-card">
+          <span class="stat-icon">Rp</span>
+          <div><strong id="statAverage">—</strong><span>Harga Rata-rata</span></div>
+        </div>
+      </div>
+    </section>
+
+    <section id="menu" class="menu-section">
+      <div class="container">
+        <div class="section-heading">
+          <div>
+              <span class="eyebrow">DARI DAPUR LUVV'S</span>
+              <h2>Yang bikin hati senang</h2>
+            <p id="resultInfoText">Memuat menu...</p>
+          </div>
+          <button id="btnResetFilters" class="btn btn-outline">Reset Filter</button>
+        </div>
+
+        <div class="toolbar">
+          <div class="search-box">
+            <span>⌕</span>
+            <input id="searchInput" type="search" placeholder="Cari nama atau deskripsi menu...">
+            <button id="btnClearSearch" class="clear-search" hidden>×</button>
+          </div>
+          <select id="sortSelect" class="select">
+            <option value="id-desc">Terbaru</option>
+            <option value="id-asc">Terlama</option>
+            <option value="nama-asc">Nama A–Z</option>
+            <option value="nama-desc">Nama Z–A</option>
+            <option value="harga-asc">Harga Terendah</option>
+            <option value="harga-desc">Harga Tertinggi</option>
+          </select>
+          <select id="statusFilter" class="select">
+            <option value="semua">Semua Status</option>
+            <option value="tersedia">Tersedia</option>
+            <option value="habis">Habis</option>
+          </select>
+          <select id="limitSelect" class="select">
+            <option value="8">8 / halaman</option>
+            <option value="12" selected>12 / halaman</option>
+            <option value="24">24 / halaman</option>
+          </select>
+        </div>
+
+        <div id="categoriesContainer" class="category-list">
+          <button class="category active" data-category="Semua">Semua <span id="badgeAll">0</span></button>
+        </div>
+
+        <div id="menuGrid" class="menu-grid"></div>
+
+        <div id="emptyState" class="empty-state hidden">
+          <div class="empty-icon">🍽️</div>
+          <h3>Menu tidak ditemukan</h3>
+          <p>Coba ubah kata pencarian atau filter yang digunakan.</p>
+          <button id="btnEmptyReset" class="btn btn-primary">Reset Filter</button>
+        </div>
+
+        <div class="pagination">
+          <button id="btnPrevPage" class="page-btn">← Sebelumnya</button>
+          <span id="pageInfo">Halaman 1</span>
+          <button id="btnNextPage" class="page-btn">Berikutnya →</button>
+        </div>
+      </div>
+    </section>
+
+    <section id="about" class="about-section">
+      <div class="container about-card">
+        <div>
+          <span class="eyebrow">CERITA KECIL KAMI</span>
+          <h2>Selalu ada cinta di setiap suapan.</h2>
+        </div>
+        <p>Luvv's menyajikan makanan favorit dengan bahan pilihan dan sentuhan rumahan. Dari suapan pertama sampai terakhir, semoga selalu ada alasan kecil untuk tersenyum.</p>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="container footer-inner">
+      <div><strong>Luvv's ♡</strong><span>Comfort food, made with love</span></div>
+      <div class="footer-links">
+        <a href="/api/menu" target="_blank">API Menu</a>
+        <a href="/api/menu/categories" target="_blank">API Kategori</a>
+        <a href="/api/health" target="_blank">Server</a>
+      </div>
+    </div>
+  </footer>
+
+  <div id="menuModal" class="modal hidden">
+    <div class="modal-card">
+      <button class="modal-close" id="btnCloseModal">×</button>
+      <span class="eyebrow" id="modalEyebrow">MENU BARU</span>
+      <h2 id="modalTitle">Tambah Menu</h2>
+      <p class="modal-subtitle">Isi data menu dengan lengkap.</p>
+
+      <form id="menuForm">
+        <input type="hidden" id="inputId">
+
+        <div class="form-grid">
+          <label>Nama Menu
+            <input id="inputNama" required minlength="2" placeholder="Contoh: Nasi Goreng Spesial">
+          </label>
+          <label>Kategori
+            <input id="inputKategori" required placeholder="Contoh: Makanan Utama">
+          </label>
+          <label>Harga
+            <input id="inputHarga" required type="number" min="1" step="1" placeholder="38000">
+          </label>
+          <label>Status
+            <select id="inputStatus">
+              <option value="tersedia">Tersedia</option>
+              <option value="habis">Habis</option>
+            </select>
+          </label>
+        </div>
+
+        <label>Deskripsi
+          <textarea id="inputDeskripsi" rows="4" placeholder="Jelaskan isi dan karakter menu..."></textarea>
+        </label>
+
+        <label>URL Gambar
+          <input id="inputGambar" type="url" placeholder="https://...">
+        </label>
+
+        <div class="image-preview-wrap">
+          <img id="imagePreview" alt="Preview gambar" hidden>
+        </div>
+
+        <div class="form-actions">
+          <button type="button" id="btnCancelModal" class="btn btn-outline">Batal</button>
+          <button type="submit" class="btn btn-primary" id="btnSubmitMenu">Simpan Menu</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <div id="detailModal" class="modal hidden">
+    <div class="modal-card detail-modal-card">
+      <button class="modal-close" id="btnCloseDetail">×</button>
+      <img id="detailImage" class="detail-image" alt="">
+      <div class="detail-body">
+        <div class="detail-top">
+          <span id="detailCategory" class="tag">Kategori</span>
+          <span id="detailStatus" class="status-badge">Tersedia</span>
+        </div>
+        <h2 id="detailName">Nama Menu</h2>
+        <strong id="detailPrice" class="detail-price">Rp0</strong>
+        <p id="detailDescription">Deskripsi menu.</p>
+        <div class="detail-actions">
+          <button id="btnAddToCartFromDetail" class="btn btn-primary">♡ Tambah ke keranjang</button>
+          <button id="btnEditFromDetail" class="btn btn-primary">Edit Menu</button>
+          <button id="btnDeleteFromDetail" class="btn btn-danger">Hapus</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div id="deleteModal" class="modal hidden">
+    <div class="modal-card small-modal">
+      <div class="danger-icon">!</div>
+      <h2>Hapus menu?</h2>
+      <p id="deleteText">Menu ini akan dihapus secara permanen.</p>
+      <div class="form-actions">
+        <button id="btnCancelDelete" class="btn btn-outline">Batal</button>
+        <button id="btnConfirmDelete" class="btn btn-danger">Ya, Hapus</button>
+      </div>
+    </div>
+  </div>
+
+  <div id="cartModal" class="modal hidden">
+    <section class="modal-card cart-modal-card" role="dialog" aria-modal="true" aria-labelledby="cartTitle">
+      <button class="modal-close" id="btnCloseCart" type="button" aria-label="Tutup keranjang">×</button>
+      <span class="eyebrow">KERANJANG KAMU</span>
+      <h2 id="cartTitle">Siap jadi pesanan?</h2>
+      <div id="cartItems" class="cart-items"></div>
+      <div id="cartEmpty" class="cart-empty hidden">
+        <span aria-hidden="true">♡</span>
+        <p>Keranjangmu masih kosong. Yuk pilih yang bikin hati senang.</p>
+      </div>
+
+      <form id="checkoutForm" hidden>
+        <div class="checkout-fields">
+          <label>Nama pemesan
+            <input id="customerName" name="customerName" autocomplete="name" required minlength="2" maxlength="100" placeholder="Nama kamu">
+          </label>
+          <label>Nomor telepon
+            <input id="customerPhone" name="customerPhone" type="tel" autocomplete="tel" required placeholder="08xxxxxxxxxx">
+          </label>
+          <label class="form-wide">Pesanan
+            <select id="fulfillmentMethod" name="fulfillmentMethod">
+              <option value="pickup">Ambil di restoran</option>
+              <option value="delivery">Antar ke alamat</option>
+            </select>
+          </label>
+          <label id="deliveryAddressField" class="form-wide hidden">Alamat pengantaran
+            <textarea id="deliveryAddress" name="deliveryAddress" rows="2" placeholder="Nama jalan, nomor rumah, kecamatan"></textarea>
+          </label>
+          <label class="form-wide">Catatan untuk dapur <span class="optional-label">Opsional</span>
+            <textarea id="orderNotes" name="notes" rows="2" maxlength="500" placeholder="Contoh: sambal dipisah"></textarea>
+          </label>
+        </div>
+        <div class="cart-summary"><span>Total pesanan</span><strong id="cartTotal">Rp0</strong></div>
+        <div class="form-actions">
+          <button type="button" id="btnContinueShopping" class="btn btn-outline">Lanjut pilih</button>
+          <button type="submit" id="btnSubmitOrder" class="btn btn-primary">Buat pesanan</button>
+        </div>
+      </form>
+    </section>
+  </div>
+
+  <div id="orderSuccessModal" class="modal hidden">
+    <section class="modal-card order-success-card" role="dialog" aria-modal="true" aria-labelledby="orderSuccessTitle">
+      <div class="order-success-mark" aria-hidden="true">♡</div>
+      <span class="eyebrow">PESANAN TERCATAT</span>
+      <h2 id="orderSuccessTitle">Terima kasih, sayang!</h2>
+      <p id="orderSuccessText">Pesananmu sudah masuk ke dapur kami.</p>
+      <div class="order-receipt"><span>Kode pesanan</span><strong id="orderSuccessCode">LVV-000</strong><span>Total</span><strong id="orderSuccessTotal">Rp0</strong></div>
+      <button id="btnCloseOrderSuccess" class="btn btn-primary" type="button">Kembali ke menu</button>
+    </section>
+  </div>
+
+  <div id="toast" class="toast"></div>
+  <script src="js/app.js"></script>
+</body>
+</html>
